@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 — DevForge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #000000;
+  --white:    #ffffff;
+  --w80:      rgba(255,255,255,0.80);
+  --w50:      rgba(255,255,255,0.50);
+  --w20:      rgba(255,255,255,0.20);
+  --w10:      rgba(255,255,255,0.10);
+  --w06:      rgba(255,255,255,0.06);
+  --w03:      rgba(255,255,255,0.03);
+  --border:   rgba(255,255,255,0.10);
+  --border-h: rgba(255,255,255,0.25);
+  --font-h:   'Bebas Neue', sans-serif;
+  --font-b:   'Plus Jakarta Sans', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--white);
+  font-family: var(--font-b);
+  font-size: 15px;
+  font-weight: 500;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TERMINAL BG ── */
+#term-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  opacity: 0.6;
+}
+.tc {
+  border-right: 1px solid rgba(255,255,255,0.025);
+  padding: 10px 10px 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+.tc:last-child { border-right: none; }
+.tc-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 5px 2px 7px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 4px;
+}
+.tc-title {
+  font-family: var(--font-mono);
+  font-size: 0.52rem; font-weight: 600;
+  color: rgba(255,255,255,0.18); letter-spacing: 0.1em; text-transform: uppercase;
+}
+.tc-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,80,80,0.5); animation: tdot 2s ease infinite;
+}
+@keyframes tdot { 0%,100%{opacity:1} 50%{opacity:0.2} }
+.tc-lines { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+.tl {
+  font-family: var(--font-mono);
+  font-size: 0.55rem; font-weight: 500; line-height: 1.85;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  color: rgba(255,80,80,0.2); opacity: 0; transform: translateY(4px);
+  animation: tappear 0.25s ease forwards;
+}
+.tl.p { color: rgba(255,255,255,0.2); }
+.tl.e { color: rgba(255,80,80,0.28); }
+.tl.d { color: rgba(255,255,255,0.08); }
+@keyframes tappear { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
+.tc::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+  background: linear-gradient(180deg, transparent, #000);
+  pointer-events: none;
+}
+
+/* ── VIGNETTE ── */
+#vignette {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, transparent 0%, rgba(0,0,0,0.88) 100%);
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 14px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 28px); max-width: 1080px;
+  z-index: 900;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 11px 18px;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+  border: 1px solid var(--border); border-radius: 13px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.logo {
+  font-family: var(--font-h); font-size: 1.45rem;
+  letter-spacing: 0.08em; text-decoration: none;
+  color: var(--white); display: flex; align-items: center; gap: 9px;
+}
+.logo-box {
+  width: 28px; height: 28px; background: var(--white);
+  border-radius: 6px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem; color: #000;
+  overflow: hidden;
+}
+.logo-box img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+.nav-back {
+  display: inline-flex; align-items: center; gap: 7px;
+  color: var(--w50); text-decoration: none;
+  font-size: 0.82rem; font-weight: 600;
+  padding: 7px 14px; border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+}
+.nav-back:hover { color: var(--white); background: var(--w06); border-color: var(--border-h); }
+
+/* ── MAIN CONTENT ── */
+main {
+  position: relative; z-index: 2;
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+/* 404 giant number */
+.err-num-wrap {
+  position: relative; margin-bottom: 20px;
+}
+.err-num {
+  font-family: var(--font-h);
+  font-size: clamp(7rem, 22vw, 18rem);
+  line-height: 0.85;
+  letter-spacing: 0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255,255,255,0.12);
+  user-select: none;
+  position: relative;
+}
+.err-num-fill {
+  position: absolute; inset: 0;
+  font-family: var(--font-h);
+  font-size: clamp(7rem, 22vw, 18rem);
+  line-height: 0.85;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  opacity: 0;
+  animation: glitch-show 4s ease infinite;
+}
+
+@keyframes glitch-show {
+  0%,100% { opacity: 0; transform: translate(0,0); }
+  10%      { opacity: 0.9; transform: translate(-3px, 1px); clip-path: inset(20% 0 60% 0); }
+  11%      { opacity: 0;   transform: translate(0,0); }
+  20%      { opacity: 0.7; transform: translate(2px, -1px); clip-path: inset(60% 0 10% 0); }
+  21%      { opacity: 0;   transform: translate(0,0); }
+  45%      { opacity: 0;   }
+  46%      { opacity: 1;   transform: translate(-1px, 0); clip-path: inset(0 0 0 0); }
+  48%      { opacity: 1;   transform: translate(2px, 1px); }
+  50%      { opacity: 0;   transform: translate(0,0); }
+}
+
+/* Scanline overlay on number */
+.err-num-wrap::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.08) 2px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+}
+
+/* Error card */
+.err-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 32px;
+  backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+  max-width: 520px; width: 100%;
+  position: relative; overflow: hidden;
+  margin-bottom: 28px;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+.err-card::before {
+  content: '';
+  position: absolute; top: 0; left: 15%; right: 15%; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,80,80,0.3), transparent);
+}
+
+.err-code-line {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.err-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: rgba(255,80,80,0.8);
+  background: rgba(255,80,80,0.08);
+  border: 1px solid rgba(255,80,80,0.2);
+  padding: 3px 10px; border-radius: 4px;
+}
+.err-status {
+  font-family: var(--font-mono);
+  font-size: 0.6rem; color: var(--w20); letter-spacing: 0.06em;
+}
+
+.err-title {
+  font-family: var(--font-h);
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  letter-spacing: 0.04em;
+  color: var(--white); margin-bottom: 10px;
+}
+.err-desc {
+  font-size: 0.85rem; font-weight: 500;
+  color: var(--w50); line-height: 1.8; margin-bottom: 20px;
+}
+
+/* Terminal mini block */
+.err-terminal {
+  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 10px; padding: 14px 16px;
+  text-align: left; margin-bottom: 0;
+}
+.err-terminal-line {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; line-height: 1.9; color: var(--w20);
+}
+.err-terminal-line .p { color: var(--w50); }
+.err-terminal-line .e { color: rgba(255,80,80,0.6); }
+.err-terminal-line .s { color: rgba(140,255,140,0.5); }
+.err-cursor {
+  display: inline-block; width: 7px; height: 12px;
+  background: var(--w50); vertical-align: middle; margin-left: 2px;
+  animation: cur 1s step-end infinite;
+}
+@keyframes cur { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* Buttons */
+.err-btns {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.7s 0.35s ease both;
+}
+.btn-w {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--white); color: #000;
+  padding: 11px 22px; border-radius: 10px;
+  font-family: var(--font-b); font-weight: 700;
+  font-size: 0.85rem; text-decoration: none;
+  transition: all 0.25s; border: none; cursor: pointer;
+}
+.btn-w:hover { background: rgba(255,255,255,0.88); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(255,255,255,0.12); }
+.btn-o {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--w50);
+  padding: 11px 22px; border-radius: 10px;
+  font-family: var(--font-b); font-weight: 600;
+  font-size: 0.85rem; text-decoration: none;
+  border: 1px solid var(--border); transition: all 0.25s;
+}
+.btn-o:hover { color: var(--white); border-color: var(--border-h); background: var(--w06); }
+
+/* Noise subtle */
+.err-noise {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(18px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+/* Countdown */
+.err-timer {
+  font-family: var(--font-mono);
+  font-size: 0.65rem; color: var(--w20);
+  margin-top: 20px; letter-spacing: 0.06em;
+  animation: fadeUp 0.7s 0.5s ease both;
+}
+.err-timer span { color: var(--w50); }
+
+/* Mobile */
+@media (max-width: 500px) {
+  .err-card { padding: 22px 18px; }
+  nav { padding: 10px 14px; }
+}
+
+/* ── RESPONSIVE ALL SCREENS ── */
+
+/* Small phones (< 380px) */
+@media (max-width: 379px) {
+  html, body { font-size: 13px; }
+  .err-card { padding: 18px 14px; border-radius: 14px; }
+  nav { top: 8px; width: calc(100% - 16px); padding: 9px 12px; border-radius: 10px; }
+  .logo { font-size: 1.1rem; }
+  .logo-box { width: 22px; height: 22px; }
+  .nav-back { font-size: 0.72rem; padding: 5px 10px; }
+  .err-btns { flex-direction: column; align-items: center; }
+  .btn-w, .btn-o { width: 100%; justify-content: center; }
+  .err-terminal { padding: 10px 12px; }
+  .err-terminal-line { font-size: 0.6rem; }
+  #term-bg { grid-template-columns: repeat(2, 1fr); }
+  #term-bg .tc:nth-child(3),
+  #term-bg .tc:nth-child(4) { display: none; }
+  main { padding: 16px; padding-top: 80px; }
+}
+
+/* Medium phones (380px - 767px) */
+@media (min-width: 380px) and (max-width: 767px) {
+  html, body { font-size: 14px; }
+  nav { top: 10px; width: calc(100% - 20px); }
+  .err-card { max-width: 100%; }
+  .err-btns { flex-direction: row; flex-wrap: wrap; }
+  main { padding: 20px; padding-top: 90px; }
+  #term-bg { grid-template-columns: repeat(2, 1fr); }
+  #term-bg .tc:nth-child(3),
+  #term-bg .tc:nth-child(4) { display: none; }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  html, body { font-size: 15px; }
+  nav { top: 12px; }
+  .err-card { max-width: 580px; padding: 30px 36px; }
+  main { padding: 28px; }
+  #term-bg { grid-template-columns: repeat(3, 1fr); }
+  #term-bg .tc:nth-child(4) { display: none; }
+}
+
+/* Laptops & desktops (1024px - 1439px) */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  html, body { font-size: 15px; }
+  .err-card { max-width: 540px; }
+  #term-bg { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Large desktops & 4K (1440px+) */
+@media (min-width: 1440px) {
+  html, body { font-size: 16px; }
+  nav { max-width: 1200px; }
+  .err-card { max-width: 600px; padding: 36px 44px; border-radius: 24px; }
+  main { padding: 32px; }
+  #term-bg { grid-template-columns: repeat(5, 1fr); }
+}
+
+/* Ultra-wide screens (2560px+) */
+@media (min-width: 2560px) {
+  html, body { font-size: 18px; }
+  nav { max-width: 1600px; }
+  .err-card { max-width: 700px; padding: 44px 52px; }
+  #term-bg { grid-template-columns: repeat(6, 1fr); }
+}
+
+/* Landscape mobile */
+@media (max-width: 900px) and (orientation: landscape) {
+  html, body { overflow-y: auto; }
+  main {
+    height: auto;
+    min-height: 100vh;
+    padding-top: 100px;
+    padding-bottom: 40px;
+    justify-content: flex-start;
+  }
+  .err-num-wrap { margin-bottom: 12px; }
+  .err-card { margin-bottom: 16px; }
+  #term-bg { grid-template-columns: repeat(3, 1fr); }
+  #term-bg .tc:nth-child(4) { display: none; }
+}
+
+/* Touch devices — disable hover effects that feel weird */
+@media (hover: none) and (pointer: coarse) {
+  .btn-w:hover { transform: none; box-shadow: none; }
+  .btn-o:hover { background: transparent; }
+  .nav-back:hover { background: transparent; color: var(--w50); border-color: var(--border); }
+}
+</style>
+</head>
+<body>
+
+<!-- TERMINAL BG -->
+<div id="term-bg">
+  <div class="tc" id="e0"><div class="tc-header"><span class="tc-title">SYSTEM // ERROR</span><div class="tc-dot"></div></div><div class="tc-lines" id="el0"></div></div>
+  <div class="tc" id="e1"><div class="tc-header"><span class="tc-title">REQUEST // TRACE</span><div class="tc-dot"></div></div><div class="tc-lines" id="el1"></div></div>
+  <div class="tc" id="e2"><div class="tc-header"><span class="tc-title">ROUTE // RESOLVE</span><div class="tc-dot"></div></div><div class="tc-lines" id="el2"></div></div>
+  <div class="tc" id="e3"><div class="tc-header"><span class="tc-title">DEBUG // LOG</span><div class="tc-dot"></div></div><div class="tc-lines" id="el3"></div></div>
+</div>
+<div id="vignette"></div>
+<div class="err-noise"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="logo">
+    <div class="logo-box"><img src="w.png" alt="logo"></div>
+    DEVFORGE
+  </a>
+  <a href="index.html" class="nav-back">
+    <i class="fa-solid fa-arrow-left fa-xs"></i> Kembali
+  </a>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <div class="err-num-wrap" style="animation: fadeUp 0.6s ease both;">
+    <div class="err-num">404</div>
+    <div class="err-num-fill">404</div>
+  </div>
+
+  <div class="err-card">
+    <div class="err-code-line">
+      <span class="err-badge"><i class="fa-solid fa-triangle-exclamation fa-xs"></i> Error</span>
+      <span class="err-status">HTTP 404 — PAGE_NOT_FOUND</span>
+    </div>
+    <div class="err-title">HALAMAN TIDAK<br>DITEMUKAN.</div>
+    <p class="err-desc">Halaman yang kamu cari tidak ada, sudah dipindah, atau memang tidak pernah ada. Cek URL-nya atau balik ke beranda.</p>
+    <div class="err-terminal">
+      <div class="err-terminal-line"><span class="p">&gt; resolve_route("</span><span class="e" id="err-path">/unknown</span><span class="p">")</span></div>
+      <div class="err-terminal-line"><span class="e">[ERR] RouteNotFoundException: No match found</span></div>
+      <div class="err-terminal-line"><span class="e">[ERR] Status: 404 — returning fallback</span></div>
+      <div class="err-terminal-line"><span class="p">&gt; suggest_redirect()</span></div>
+      <div class="err-terminal-line"><span class="s">[OK] Redirect available → /index.html</span></div>
+      <div class="err-terminal-line"><span class="p">&gt; _</span><span class="err-cursor"></span></div>
+    </div>
+  </div>
+
+  <div class="err-btns">
+    <a href="index.html" class="btn-w">
+      <i class="fa-solid fa-house"></i> Ke Beranda
+    </a>
+    <a href="https://wa.me/6287738441668?text=Halo%20DevForge%2C%20mau%20konsultasi%20project" class="btn-o" target="_blank" rel="noopener">
+      <i class="fa-brands fa-whatsapp"></i> Hubungi Kami
+    </a>
+  </div>
+
+  <div class="err-timer">
+    Redirect otomatis dalam <span id="countdown">10</span> detik
+  </div>
+
+</main>
+
+<script>
+  // Show current path in terminal
+  const pathEl = document.getElementById('err-path');
+  if (pathEl) pathEl.textContent = window.location.pathname || '/unknown';
+
+  // Terminal background - error theme
+  const errLines = [
+    [
+      { c:'e', t:'[ERR] 404 Not Found — route unresolved' },
+      { c:'p', t:'> devforge route:list --filter=active' },
+      { c:'',  t:'[ROUTE] GET  /         → HomeController' },
+      { c:'',  t:'[ROUTE] GET  /layanan  → ServiceController' },
+      { c:'',  t:'[ROUTE] GET  /harga    → PricingController' },
+      { c:'e', t:'[ROUTE] GET  ???       → NOT FOUND' },
+      { c:'p', t:'> devforge debug --trace' },
+      { c:'e', t:'[TRACE] No matching route for request' },
+      { c:'e', t:'[TRACE] RoutingException thrown' },
+      { c:'',  t:'[INFO] Fallback handler triggered' },
+      { c:'p', t:'> devforge log:tail --lines=5' },
+    ],
+    [
+      { c:'p', t:'> curl -I https://devforge.id/???'      },
+      { c:'e', t:'HTTP/2 404 Not Found'                    },
+      { c:'',  t:'Content-Type: text/html; charset=utf-8' },
+      { c:'',  t:'X-Powered-By: DevForge/2.0'             },
+      { c:'e', t:'X-Error-Code: ROUTE_NOT_FOUND'          },
+      { c:'p', t:'> devforge cache:clear'                 },
+      { c:'',  t:'[CACHE] Flushing route cache...'        },
+      { c:'',  t:'[CACHE] 0 items cleared'                },
+      { c:'e', t:'[WARN] Route still unresolvable'        },
+      { c:'p', t:'> devforge route:match --url=???'       },
+      { c:'e', t:'[MATCH] No routes matched given URL'    },
+    ],
+    [
+      { c:'e', t:'[404] Request logged: GET /???'              },
+      { c:'',  t:'[LOG] User-Agent: Mozilla/5.0...'           },
+      { c:'',  t:'[LOG] Timestamp: ' + new Date().toISOString().slice(0,19) },
+      { c:'e', t:'[LOG] Response: 404 NOT FOUND'              },
+      { c:'p', t:'> devforge sitemap --generate'              },
+      { c:'',  t:'[MAP] Scanning registered routes...'        },
+      { c:'',  t:'[MAP] Found 12 valid routes'                },
+      { c:'e', t:'[MAP] Requested path not in sitemap'        },
+      { c:'p', t:'> devforge notify --channel=error'          },
+      { c:'',  t:'[NOTIFY] Alert sent to monitoring'          },
+    ],
+    [
+      { c:'p', t:'> devforge health --check'                   },
+      { c:'',  t:'[HEALTH] Server: OK'                         },
+      { c:'',  t:'[HEALTH] Database: OK'                       },
+      { c:'',  t:'[HEALTH] Cache: OK'                          },
+      { c:'e', t:'[HEALTH] Routing: DEGRADED (404)'           },
+      { c:'p', t:'> devforge error:report --last=1'           },
+      { c:'e', t:'[ERR] 404 at ' + new Date().toLocaleTimeString() },
+      { c:'e', t:'[ERR] Unhandled route exception'            },
+      { c:'',  t:'[INFO] Error ID: #' + Math.random().toString(36).slice(2,10).toUpperCase() },
+      { c:'p', t:'> devforge redirect --to=index.html'        },
+      { c:'',  t:'[REDIRECT] Preparing fallback response...'  },
+    ]
+  ];
+
+  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+  function runCol(wrapId, lines) {
+    const wrap = document.getElementById(wrapId);
+    if (!wrap) return;
+    function cycle(delay) {
+      let cum = delay;
+      lines.forEach(line => {
+        cum += rand(200, 650);
+        const d = cum;
+        setTimeout(() => {
+          const el = document.createElement('div');
+          el.className = 'tl' + (line.c ? ' ' + line.c : '');
+          el.textContent = line.t;
+          wrap.appendChild(el);
+          const all = wrap.querySelectorAll('.tl');
+          if (all.length > 28) all[0].remove();
+        }, d);
+      });
+      setTimeout(() => cycle(0), cum + rand(1200, 2800));
+    }
+    cycle(rand(0, 1800));
+  }
+
+  runCol('el0', errLines[0]);
+  runCol('el1', errLines[1]);
+  runCol('el2', errLines[2]);
+  runCol('el3', errLines[3]);
+
+  // Countdown redirect
+  let secs = 10;
+  const cd = document.getElementById('countdown');
+  const timer = setInterval(() => {
+    secs--;
+    if (cd) cd.textContent = secs;
+    if (secs <= 0) {
+      clearInterval(timer);
+      window.location.href = 'index.html';
+    }
+  }, 1000);
+</script>
+</body>
+</html>
